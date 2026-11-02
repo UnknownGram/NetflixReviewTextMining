@@ -1,0 +1,48 @@
+---
+title: "TextMining"
+format: typst
+editor: visual
+author: "Terrence Steele"
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Importing the Data
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+library(tidyverse)
+library(tidytext)
+library(janeaustenr)
+library(dplyr)
+library(stringr)
+netflix <- read.csv("/cloud/project/netflix_reviews.csv")
+```
+
+Data Cleaning
+
+```{r}
+# Removing Duplicates
+netflix <- netflix |> unique()
+
+netflix <- netflix %>%
+  unnest_tokens(word, content)
+
+netflix |> 
+  count(word) |> arrange(desc(n))
+
+data(stop_words)
+
+netflix <- netflix %>%
+  anti_join(stop_words)
+
+netflix %>%
+  count(word, sort = TRUE)
+
+
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
